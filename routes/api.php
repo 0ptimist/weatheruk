@@ -24,7 +24,9 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::controller(WeatherController::class)->group(function () {
-    Route::post('city', 'showCityWeather');
+    Route::post('city', 'showCityWeather')->middleware([
+        'weather.validation',
+    ]);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
