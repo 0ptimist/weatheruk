@@ -19,15 +19,26 @@ class WeatherController extends Controller
 
     public function showCityWeather(Request $request)
     {
-        $requestData = $request->all();
+        try {
+            $requestData = $request->all();
 
-        $weatherText = $this->weatherProvider->getLocationWeather($requestData['city']);
+            $weatherText = $this->weatherProvider->getLocationWeather($requestData['city']);
 
-        return response()->json(
-            [
-                "weather"  => $weatherText,
-            ],
-            200
-        );
+            return response()->json(
+                [
+                    "weather"  => $weatherText,
+                ],
+                200
+            );
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+
+            return response()->json(
+                [
+                    "error"  => 'Internal system error.',
+                ],
+                500
+            );
+        }
     }
 }
